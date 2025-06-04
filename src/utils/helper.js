@@ -29,7 +29,7 @@ const readExcelFile = (file) => {
               .filter((opt) => opt.text);
 
             return {
-              site: "F8BET",
+              site: import.meta.env.VITE_SITE,
               question: row.question.trim(),
               category: Number(row.category) || 1,
               difficulty: row.difficulty || "easy",

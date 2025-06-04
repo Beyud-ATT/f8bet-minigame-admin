@@ -20,14 +20,11 @@ export function AuthProvider({ children }) {
   const handleAuthUser = useCallback(
     async (res) => {
       if (res.status === 200) {
-        const { token, refreshToken, userId, displayName, userType } = res.data;
+        const { token, displayName } = res?.data?.data || {};
         localStorage.setItem("token", token);
-        localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("userId", userId);
         localStorage.setItem("displayName", displayName);
-        localStorage.setItem("userType", userType);
         setIsAuthenticated(true);
-        navigate("/livestreams");
+        navigate("/questions");
       }
     },
     [navigate],

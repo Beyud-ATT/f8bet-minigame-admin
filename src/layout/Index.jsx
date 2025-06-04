@@ -5,8 +5,11 @@ import Header from "./Header";
 import Content from "./Content";
 
 const MainLayout = () => (
-  <Layout className="h-screen overflow-hidden">
-    <Sider Layout={Layout} className="!bg-[var(--lighter-background)]" />
+  <Layout className="screen">
+    <Sider
+      Layout={Layout}
+      className="min-h-screen !bg-[var(--lighter-background)]"
+    />
     <Layout>
       <Header Layout={Layout} className="!bg-[var(--lighter-background-2)]" />
       <Content

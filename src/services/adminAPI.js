@@ -12,6 +12,7 @@ async function getRegisterQuestion(params) {
     return response;
   } catch (error) {
     toast.error(error?.response?.data?.message);
+    throw error;
   }
 }
 
@@ -23,6 +24,7 @@ async function getListPlayer(params) {
     return response;
   } catch (error) {
     toast.error(error?.response?.data?.message);
+    throw error;
   }
 }
 

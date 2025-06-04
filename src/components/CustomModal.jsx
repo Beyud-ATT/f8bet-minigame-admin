@@ -2,10 +2,15 @@ import { Button } from "antd";
 import { CompoundModal } from "./CompoundModal";
 import { LuPenLine } from "react-icons/lu";
 
-export default function CreateUpdateModal({ trigger, content }) {
+export default function CustomModal({
+  trigger,
+  content,
+  contentConfig,
+  triggerConfig,
+}) {
   return (
     <CompoundModal>
-      <CompoundModal.Trigger>
+      <CompoundModal.Trigger {...triggerConfig}>
         {trigger || (
           <Button
             icon={<LuPenLine />}
@@ -14,7 +19,9 @@ export default function CreateUpdateModal({ trigger, content }) {
           />
         )}
       </CompoundModal.Trigger>
-      <CompoundModal.Content>{content}</CompoundModal.Content>
+      <CompoundModal.Content {...contentConfig}>
+        {content}
+      </CompoundModal.Content>
     </CompoundModal>
   );
 }

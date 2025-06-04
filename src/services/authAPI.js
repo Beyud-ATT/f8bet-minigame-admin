@@ -3,7 +3,7 @@ import axoisBase from "./axiosBase";
 
 async function login(data) {
   try {
-    const response = await axoisBase.post("/auth/login", data);
+    const response = await axoisBase.post("/auth/signin", data);
     return response;
   } catch (e) {
     toast.error(e?.response?.data?.message);

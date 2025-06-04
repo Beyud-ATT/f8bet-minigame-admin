@@ -1,11 +1,9 @@
 import React from "react";
 import { Table, Tag } from "antd";
-import useQueryFactory from "../hooks/factory/queryFactory";
 import moment from "moment/moment";
 
 const UniversalTable = ({
-  queryKey,
-  queryFn,
+  queryData,
   columns,
   rowKey = "id",
   loading: externalLoading,
@@ -14,14 +12,7 @@ const UniversalTable = ({
   style,
 }) => {
   // React Query hook
-  const {
-    data = [],
-    isLoading,
-    error,
-  } = useQueryFactory({
-    queryKey,
-    queryFn,
-  });
+  const { data = [], isLoading } = queryData;
 
   // Auto-generate column renderers based on type
   const generateRenderer = (column) => {
@@ -79,10 +70,6 @@ const UniversalTable = ({
     render: column.render || generateRenderer(column),
     ...column,
   }));
-
-  if (error) {
-    return <div>Error loading data: {error.message}</div>;
-  }
 
   return (
     <Table

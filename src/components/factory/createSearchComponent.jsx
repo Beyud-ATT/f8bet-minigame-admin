@@ -2,8 +2,6 @@ import { DatePicker, Form, Input, Select } from "antd";
 import { FaSearch } from "react-icons/fa";
 import { useSearchParams } from "react-router";
 
-import "react-datepicker/dist/react-datepicker.css";
-
 export function createSearchComponent(config) {
   const {
     type = "text",
@@ -15,6 +13,7 @@ export function createSearchComponent(config) {
     allowClear = true,
     showSearch = false,
     filterOption = true,
+    ...props
   } = config;
 
   return function SearchComponent() {
@@ -45,6 +44,7 @@ export function createSearchComponent(config) {
               showSearch={showSearch}
               filterOption={filterOption}
               onChange={handleChange}
+              {...props}
             />
           );
 
@@ -55,6 +55,7 @@ export function createSearchComponent(config) {
               prefix={icon}
               className="w-full"
               onChange={(e) => handleChange(e.target.value)}
+              {...props}
             />
           );
 
@@ -65,6 +66,7 @@ export function createSearchComponent(config) {
               className="w-full"
               onChange={(date) => handleChange(date.format("YYYY-MM-DD"))}
               allowClear={false}
+              {...props}
             />
           );
 

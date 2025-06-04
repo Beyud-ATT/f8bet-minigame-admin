@@ -23,7 +23,7 @@ function RegisterItem({ item }) {
             <GiBrain className="!text-pink-300" />
             <span>Trả lời câu hỏi: </span>
           </Flex>
-          <span>{question}</span>
+          <span className="font-bold">{question}</span>
         </Flex>
       </Typography.Text>
       <Typography.Text>
@@ -32,7 +32,7 @@ function RegisterItem({ item }) {
             <BsAlphabetUppercase className="!text-blue-500" />
             <span>Đoán chữ: </span>
           </Flex>
-          <span>{guessWord}</span>
+          <span className="font-bold">{guessWord}</span>
         </Flex>
       </Typography.Text>
       <Typography.Text>
@@ -41,7 +41,7 @@ function RegisterItem({ item }) {
             <FaGift className="!text-yellow-500" />
             <span>Nhận code: </span>
           </Flex>
-          <span>{receiveCode}</span>
+          <span className="font-bold">{receiveCode}</span>
         </Flex>
       </Typography.Text>
     </Flex>

@@ -121,4 +121,9 @@
     .ant-pagination-item-link-icon {
     color: var(--color-brand-primary);
   }
+
+  .ant-form-item label {
+    font-weight: bold;
+    font-size: 14px;
+  }
 }

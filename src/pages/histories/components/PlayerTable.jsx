@@ -1,17 +1,11 @@
-import { getListPlayer } from "../../../services/adminAPI";
 import { UniversalTable } from "../../../components/TableLayout";
 import { GAME_CATEGORY } from "../../../utils/constants";
-import { Space, Tag } from "antd";
-import DeleteModal from "../../../components/DeleteModal";
+import { Tag } from "antd";
 import moment from "moment";
-import { useSearchParams } from "react-router";
+import usePlayer from "../../../hooks/usePlayer";
 
 export default function PlayerTable() {
-  const [searchParams] = useSearchParams();
-  const account = searchParams.get("account");
-  const startDate = searchParams.get("startDate");
-  const endDate = searchParams.get("endDate");
-  const category = searchParams.get("category");
+  const playerData = usePlayer();
 
   const questionColumns = [
     { key: "account", title: "Tên người chơi", dataIndex: "account" },
@@ -82,23 +76,11 @@ export default function PlayerTable() {
         return <span>{duration} giây</span>;
       },
     },
-    {
-      key: "action",
-      title: "Hành động",
-      dataIndex: "action",
-      align: "center",
-      render: () => (
-        <Space size="middle">
-          <DeleteModal />
-        </Space>
-      ),
-    },
   ];
 
   return (
     <UniversalTable
-      queryKey={["players", account, startDate, endDate, category]}
-      queryFn={() => getListPlayer({ account, startDate, endDate, category })}
+      queryData={playerData}
       columns={questionColumns}
       scroll={{ x: 500, y: 350 }}
     />

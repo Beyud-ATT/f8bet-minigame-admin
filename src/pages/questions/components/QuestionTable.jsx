@@ -1,17 +1,14 @@
 import { Flex, Space, Tag } from "antd";
 import { UniversalTable } from "../../../components/TableLayout";
-import { getFullQuestions } from "../../../services/questionsAPI";
 import { DIFFICULTY, GAME_CATEGORY } from "../../../utils/constants";
 import { LuCheckCheck } from "react-icons/lu";
-import CreateUpdateModal from "../../../components/CreateUpdateModal";
-import DeleteModal from "../../../components/DeleteModal";
-import { useSearchParams } from "react-router";
+import CustomModal from "../../../components/CustomModal";
+import DeleteModal from "./DeleteModal";
+import useQuestions from "../../../hooks/useQuestions";
+import UpdateModal from "./UpdateModal";
 
 export default function QuestionTable() {
-  const [searchParams] = useSearchParams();
-  const answer = searchParams.get("answer");
-  const question = searchParams.get("question");
-  const category = searchParams.get("category");
+  const questionData = useQuestions();
 
   const questionColumns = [
     { key: "question", title: "Câu hỏi", dataIndex: "question" },
@@ -63,10 +60,10 @@ export default function QuestionTable() {
       title: "Hành động",
       dataIndex: "action",
       align: "center",
-      render: () => (
+      render: (_, record) => (
         <Space size="middle">
-          <CreateUpdateModal />
-          <DeleteModal />
+          <UpdateModal record={record} />
+          <DeleteModal record={record} />
         </Space>
       ),
     },
@@ -74,8 +71,7 @@ export default function QuestionTable() {
 
   return (
     <UniversalTable
-      queryKey={["questions", answer, question, category]}
-      queryFn={getFullQuestions}
+      queryData={questionData}
       columns={questionColumns}
       scroll={{ x: 500, y: 550 }}
     />

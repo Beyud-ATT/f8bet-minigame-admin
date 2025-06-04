@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { readExcelFile } from "../utils/helper";
 
-const ExcelFileReader = () => {
+const ExcelFileReader = ({ onFileRead }) => {
   const [fileData, setFileData] = useState(null);
   const [fileName, setFileName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [postBody, setPostBody] = useState("");
+  // const [postBody, setPostBody] = useState("");
 
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
@@ -19,22 +19,23 @@ const ExcelFileReader = () => {
     try {
       const data = await readExcelFile(file);
       setFileData(data);
+      onFileRead(data);
 
       // Create POST request body
-      const requestBody = JSON.stringify(
-        {
-          questions: data,
-          metadata: {
-            fileName: file.name,
-            totalQuestions: data.length,
-            uploadedAt: new Date().toISOString(),
-          },
-        },
-        null,
-        2,
-      );
+      // const requestBody = JSON.stringify(
+      //   {
+      //     questions: data,
+      //     metadata: {
+      //       fileName: file.name,
+      //       totalQuestions: data.length,
+      //       uploadedAt: new Date().toISOString(),
+      //     },
+      //   },
+      //   null,
+      //   2,
+      // );
 
-      setPostBody(requestBody);
+      // setPostBody(requestBody);
     } catch (err) {
       setError(`Error reading file: ${err.message}`);
     } finally {
@@ -42,45 +43,43 @@ const ExcelFileReader = () => {
     }
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(postBody);
-    alert("POST body copied to clipboard!");
-  };
+  // const copyToClipboard = () => {
+  //   navigator.clipboard.writeText(postBody);
+  //   alert("POST body copied to clipboard!");
+  // };
 
-  const sendPostRequest = async () => {
-    if (!postBody) return;
+  // const sendPostRequest = async () => {
+  //   if (!postBody) return;
 
-    try {
-      // Example POST request - modify URL and headers as needed
-      const response = await fetch("/api/upload-questions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: postBody,
-      });
+  //   try {
+  //     // Example POST request - modify URL and headers as needed
+  //     const response = await fetch("/api/upload-questions", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: postBody,
+  //     });
 
-      if (response.ok) {
-        alert("Data sent successfully!");
-      } else {
-        alert("Failed to send data");
-      }
-    } catch (err) {
-      alert(`Error sending request: ${err.message}`);
-    }
-  };
+  //     if (response.ok) {
+  //       alert("Data sent successfully!");
+  //     } else {
+  //       alert("Failed to send data");
+  //     }
+  //   } catch (err) {
+  //     alert(`Error sending request: ${err.message}`);
+  //   }
+  // };
 
   return (
     <div className="mx-auto max-w-4xl rounded-lg bg-white p-6 shadow-lg">
-      <h1 className="mb-6 text-2xl font-bold text-gray-800">
-        Excel File Reader
-      </h1>
+      <h1 className="mb-6 text-2xl font-bold text-gray-800">Chọn File Excel</h1>
 
       {/* File Input */}
       <div className="mb-6">
         <label className="block">
           <div className="inline-block cursor-pointer rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-3 text-white transition-shadow duration-200 hover:shadow-lg">
-            {isLoading ? "Reading File..." : "Choose Excel File"}
+            {isLoading ? "Đang đọc file..." : "Chọn file"}
           </div>
           <input
             type="file"
@@ -96,10 +95,10 @@ const ExcelFileReader = () => {
       {fileName && (
         <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4">
           <p className="text-blue-800">
-            <strong>File:</strong> {fileName}
+            <strong>Tên file:</strong> {fileName}
             {fileData && (
               <span className="ml-4">
-                <strong>Questions found:</strong> {fileData.length}
+                <strong>Số câu hỏi:</strong> {fileData.length}
               </span>
             )}
           </p>
@@ -114,7 +113,7 @@ const ExcelFileReader = () => {
       )}
 
       {/* POST Body Output */}
-      {postBody && (
+      {/* {postBody && (
         <div className="mb-6">
           <div className="mb-2 flex items-center justify-between">
             <h3 className="text-lg font-semibold text-gray-700">
@@ -139,13 +138,13 @@ const ExcelFileReader = () => {
             {postBody}
           </pre>
         </div>
-      )}
+      )} */}
 
       {/* Data Preview */}
       {fileData && fileData.length > 0 && (
         <div>
           <h3 className="mb-3 text-lg font-semibold text-gray-700">
-            Data Preview (First 3 Questions):
+            Dữ liệu tham khảo (3 câu hỏi đầu tiên):
           </h3>
           <div className="space-y-4">
             {fileData.slice(0, 3).map((question, index) => (

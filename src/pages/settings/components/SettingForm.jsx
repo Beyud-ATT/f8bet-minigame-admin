@@ -1,5 +1,18 @@
-import { Button, Col, Flex, Form, Input, Row, Space, Typography } from "antd";
+import {
+  Button,
+  Col,
+  Flex,
+  Form,
+  Input,
+  Row,
+  Space,
+  Switch,
+  Typography,
+} from "antd";
 import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
+import useSettings from "../../../hooks/useSettings";
+import { useEffect } from "react";
+import useSettingsUpdate from "../../../hooks/useSettingsUpdate";
 
 var __rest =
   (this && this.__rest) ||
@@ -24,79 +37,117 @@ var __rest =
   };
 
 export default function SettingForm() {
+  const { data } = useSettings();
+  const [form] = Form.useForm();
+  const { mutate } = useSettingsUpdate();
+
+  const onFinish = (values) => {
+    mutate({
+      ...values,
+      site: import.meta.env.VITE_SITE,
+    });
+  };
+
+  useEffect(() => {
+    if (data?.data?.data) {
+      form.setFieldsValue(data?.data?.data);
+    }
+  }, [data, form]);
+
   return (
-    <Form>
-      <Typography.Title level={2}>Cài đặt chung</Typography.Title>
+    <Form form={form} onFinish={onFinish}>
+      <Typography.Title level={2} className="!mt-10">
+        Cài đặt chung
+      </Typography.Title>
+
       <Row gutter={16}>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item name="vipAccount" label="TK VIP mới tham gia">
             <Input />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item name="numberDeposit" label="Số lần nạp tiền">
             <Input />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item name="dayDeposit" label="Số ngày nạp tiền">
             <Input />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item
+            name="totalDayDeposit"
+            label="Tổng số tiền nạp trong 3 ngày"
+          >
             <Input />
           </Form.Item>
         </Col>
       </Row>
       <Row gutter={16}>
         <Col span={12}>
-          <Form.Item name="" label="">
-            <Input />
+          <Form.Item name="lam_dung" label="Lạm dụng (nhấn Enter để thêm)">
+            <Input placeholder="Nhập lạm dụng" />
           </Form.Item>
         </Col>
         <Col span={12}>
-          <Form.Item name="" label="">
-            <Input />
+          <Form.Item name="urlApp" label="URL App (nhấn Enter để thêm)">
+            <Input placeholder="Nhập URL App" />
           </Form.Item>
         </Col>
       </Row>
 
-      <Typography.Title level={2}>
+      {/* Trả lời câu hỏi - Now grouped under 'quiz' */}
+      <Typography.Title level={2} className="!mt-10">
         Cài đặt cho game "Trả lời câu hỏi"
       </Typography.Title>
-      <Form.Item name="" label="">
+      <Form.Item name={["quiz", "status"]} label="Trạng thái">
+        <Switch />
+      </Form.Item>
+      <Form.Item
+        name={["quiz", "portalMemo"]}
+        label="Lời nhắn trang thành viên"
+      >
         <Input />
       </Form.Item>
       <Row gutter={16}>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item
+            name={["quiz", "timeLimit"]}
+            label="Thời gian tối đa mỗi bộ câu hỏi (giây)"
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item name={["quiz", "questionCount"]} label="Số lượng câu hỏi">
             <Input />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item name={["quiz", "point"]} label="Điểm thưởng">
             <Input />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item
+            name={["quiz", "maxAttemptsPerDay"]}
+            label="Số lượt chơi tối đa mỗi ngày"
+          >
             <Input />
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item name="" label="">
-        <Input />
+      <Form.Item
+        name={["quiz", "content"]}
+        label="Nội dung tham gia trả lời câu hỏi"
+      >
+        <Input placeholder="Nhập nội dung" />
       </Form.Item>
-
       <Flex justify="space-between">
         <Flex vertical>
-          <Form.List name="pointRanges">
+          <Form.List name={["quiz", "pointRanges"]}>
             {(fields, { add, remove }) => (
               <>
                 {fields.map((_a) => {
@@ -110,28 +161,37 @@ export default function SettingForm() {
                     >
                       <Form.Item
                         {...restField}
-                        name={[name, "first"]}
+                        label="Từ %"
+                        name={[name, "correctPercentMin"]}
                         rules={[
-                          { required: true, message: "Missing first name" },
+                          {
+                            required: true,
+                            message: "Missing correctPercentMin",
+                          },
                         ]}
                       >
-                        <Input placeholder="First Name" />
+                        <Input placeholder="Nhập số" />
                       </Form.Item>
                       <Form.Item
                         {...restField}
-                        name={[name, "last"]}
+                        label="Đến %"
+                        name={[name, "correctPercentMax"]}
                         rules={[
-                          { required: true, message: "Missing last name" },
+                          {
+                            required: true,
+                            message: "Missing correctPercentMax",
+                          },
                         ]}
                       >
-                        <Input placeholder="Last Name" />
+                        <Input placeholder="Nhập số" />
                       </Form.Item>
                       <Form.Item
                         {...restField}
-                        name={[name, "remove"]}
-                        rules={[{ required: true, message: "Missing remove" }]}
+                        label="Điểm"
+                        name={[name, "point"]}
+                        rules={[{ required: true, message: "Missing point" }]}
                       >
-                        <Input placeholder="Remove" />
+                        <Input placeholder="Nhập số" />
                       </Form.Item>
                       <FaMinusCircle onClick={() => remove(name)} />
                     </Space>
@@ -145,64 +205,7 @@ export default function SettingForm() {
                     block
                     icon={<FaPlusCircle />}
                   >
-                    Add field
-                  </Button>
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
-        </Flex>
-        <Flex vertical>
-          <Form.List name="users">
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map((_a) => {
-                  var { key, name } = _a,
-                    restField = __rest(_a, ["key", "name"]);
-                  return (
-                    <Space
-                      key={key}
-                      style={{ display: "flex", marginBottom: 8 }}
-                      align="baseline"
-                    >
-                      <Form.Item
-                        {...restField}
-                        name={[name, "first"]}
-                        rules={[
-                          { required: true, message: "Missing first name" },
-                        ]}
-                      >
-                        <Input placeholder="First Name" />
-                      </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "last"]}
-                        rules={[
-                          { required: true, message: "Missing last name" },
-                        ]}
-                      >
-                        <Input placeholder="Last Name" />
-                      </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "remove"]}
-                        rules={[{ required: true, message: "Missing remove" }]}
-                      >
-                        <Input placeholder="Remove" />
-                      </Form.Item>
-                      <FaMinusCircle onClick={() => remove(name)} />
-                    </Space>
-                  );
-                })}
-
-                <Form.Item>
-                  <Button
-                    type="dashed"
-                    onClick={() => add()}
-                    block
-                    icon={<FaPlusCircle />}
-                  >
-                    Add field
+                    Thêm
                   </Button>
                 </Form.Item>
               </>
@@ -211,41 +214,60 @@ export default function SettingForm() {
         </Flex>
       </Flex>
 
-      <Typography.Title level={2}>
+      {/* Đuổi hình bắt chữ - Now grouped under 'wordGuessing' */}
+      <Typography.Title level={2} className="!mt-10">
         Cài đặt cho game "Đuổi hình bắt chữ"
       </Typography.Title>
-      <Form.Item name="" label="">
+      <Form.Item name={["wordGuessing", "status"]} label="Trạng thái">
+        <Switch />
+      </Form.Item>
+      <Form.Item
+        name={["wordGuessing", "portalMemo"]}
+        label="Lời nhắn trang thành viên"
+      >
         <Input />
       </Form.Item>
       <Row gutter={16}>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item
+            name={["wordGuessing", "timeLimit"]}
+            label="Thời gian mỗi lượt chơi (giây)"
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item
+            name={["wordGuessing", "questionCount"]}
+            label="Số lượng câu hỏi"
+          >
             <Input />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item name={["wordGuessing", "point"]} label="Điểm thưởng">
             <Input />
           </Form.Item>
         </Col>
         <Col span={6}>
-          <Form.Item name="" label="">
+          <Form.Item
+            name={["wordGuessing", "maxAttemptsPerDay"]}
+            label="Số lượt chơi tối đa mỗi ngày"
+          >
             <Input />
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item name="" label="">
-        <Input />
+      <Form.Item
+        name={["wordGuessing", "content"]}
+        label="Nội dung tham gia đoán chữ"
+      >
+        <Input placeholder="Nhập nội dung" />
       </Form.Item>
 
       <Flex justify="space-between">
         <Flex vertical>
-          <Form.List name="pointRanges">
+          <Form.List name={["wordGuessing", "pointRanges"]}>
             {(fields, { add, remove }) => (
               <>
                 {fields.map((_a) => {
@@ -259,28 +281,27 @@ export default function SettingForm() {
                     >
                       <Form.Item
                         {...restField}
-                        name={[name, "first"]}
-                        rules={[
-                          { required: true, message: "Missing first name" },
-                        ]}
+                        label="Từ %"
+                        name={[name, "correctPercentMin"]}
+                        rules={[{ required: true, message: "Nhập số" }]}
                       >
-                        <Input placeholder="First Name" />
+                        <Input placeholder="Nhập số" />
                       </Form.Item>
                       <Form.Item
                         {...restField}
-                        name={[name, "last"]}
-                        rules={[
-                          { required: true, message: "Missing last name" },
-                        ]}
+                        label="Đến %"
+                        name={[name, "correctPercentMax"]}
+                        rules={[{ required: true, message: "Nhập số" }]}
                       >
-                        <Input placeholder="Last Name" />
+                        <Input placeholder="Nhập số" />
                       </Form.Item>
                       <Form.Item
                         {...restField}
-                        name={[name, "remove"]}
-                        rules={[{ required: true, message: "Missing remove" }]}
+                        label="Điểm"
+                        name={[name, "point"]}
+                        rules={[{ required: true, message: "Nhập số" }]}
                       >
-                        <Input placeholder="Remove" />
+                        <Input placeholder="Nhập số" />
                       </Form.Item>
                       <FaMinusCircle onClick={() => remove(name)} />
                     </Space>
@@ -294,64 +315,7 @@ export default function SettingForm() {
                     block
                     icon={<FaPlusCircle />}
                   >
-                    Add field
-                  </Button>
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
-        </Flex>
-        <Flex vertical>
-          <Form.List name="users">
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map((_a) => {
-                  var { key, name } = _a,
-                    restField = __rest(_a, ["key", "name"]);
-                  return (
-                    <Space
-                      key={key}
-                      style={{ display: "flex", marginBottom: 8 }}
-                      align="baseline"
-                    >
-                      <Form.Item
-                        {...restField}
-                        name={[name, "first"]}
-                        rules={[
-                          { required: true, message: "Missing first name" },
-                        ]}
-                      >
-                        <Input placeholder="First Name" />
-                      </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "last"]}
-                        rules={[
-                          { required: true, message: "Missing last name" },
-                        ]}
-                      >
-                        <Input placeholder="Last Name" />
-                      </Form.Item>
-                      <Form.Item
-                        {...restField}
-                        name={[name, "remove"]}
-                        rules={[{ required: true, message: "Missing remove" }]}
-                      >
-                        <Input placeholder="Remove" />
-                      </Form.Item>
-                      <FaMinusCircle onClick={() => remove(name)} />
-                    </Space>
-                  );
-                })}
-
-                <Form.Item>
-                  <Button
-                    type="dashed"
-                    onClick={() => add()}
-                    block
-                    icon={<FaPlusCircle />}
-                  >
-                    Add field
+                    Thêm trường
                   </Button>
                 </Form.Item>
               </>
@@ -359,6 +323,12 @@ export default function SettingForm() {
           </Form.List>
         </Flex>
       </Flex>
+
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Lưu
+        </Button>
+      </Form.Item>
     </Form>
   );
 }
