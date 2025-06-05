@@ -17,7 +17,8 @@ function BulkUploadModalContent() {
   const onFinish = (values) => {
     const data = fileData.map((item) => ({
       ...item,
-      type: values.category,
+      category: values.category,
+      type: "single",
     }));
     bulkUpload(data, {
       onSuccess: () => {
