@@ -12,7 +12,7 @@ export default function useQuestions() {
 
   return useQueryFactory({
     queryKey: ["questions", answer, question, category],
-    queryFn: getFullQuestions,
+    queryFn: () => getFullQuestions({ answer, question, category }),
     type: QUERY_TYPES.SIMPLE,
     enabled: isAuthenticated,
   });

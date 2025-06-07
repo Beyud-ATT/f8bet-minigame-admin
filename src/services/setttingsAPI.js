@@ -5,7 +5,7 @@ const ENDPOINT = "/setting-question";
 
 async function getSettings(params) {
   try {
-    const response = await axoisBase.get(`${ENDPOINT}`, params);
+    const response = await axoisBase.get(`${ENDPOINT}`, { params });
     return response;
   } catch (error) {
     toast.error(error?.response?.data?.message);

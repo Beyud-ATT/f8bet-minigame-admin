@@ -5,7 +5,7 @@ const ENDPOINT = "/questions";
 
 async function getFullQuestions(params) {
   try {
-    const response = await axoisBase.get(`${ENDPOINT}/full`, params);
+    const response = await axoisBase.get(`${ENDPOINT}/full`, { params });
     return response;
   } catch (error) {
     toast.error(error?.response?.data?.message);

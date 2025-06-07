@@ -7,7 +7,7 @@ async function getRegisterQuestion(params) {
   try {
     const response = await axoisBase.get(
       `${ENDPOINT}/stats/register-question`,
-      params,
+      { params },
     );
     return response;
   } catch (error) {
