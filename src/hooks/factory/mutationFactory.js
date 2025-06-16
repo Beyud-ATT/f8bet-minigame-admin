@@ -14,6 +14,8 @@ export default function useMutationFactory({
       toast.success(successMessage);
     },
     onSettled: () => {
+      console.log("onSettled");
+      console.log(queryKey);
       queryClient.invalidateQueries({
         queryKey,
       });

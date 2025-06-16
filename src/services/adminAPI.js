@@ -28,4 +28,16 @@ async function getListPlayer(params) {
   }
 }
 
-export { getRegisterQuestion, getListPlayer };
+async function deletePlayerGameHistory(id) {
+  try {
+    const response = await axoisBase.delete(
+      `${ENDPOINT}/player-question/${id}`,
+    );
+    return response;
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+    throw error;
+  }
+}
+
+export { getRegisterQuestion, getListPlayer, deletePlayerGameHistory };

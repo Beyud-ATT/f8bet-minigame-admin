@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router";
 import { getListPlayer } from "../services/adminAPI";
-import useQueryFactory from "./factory/queryFactory";
+import useQueryFactory, { QUERY_TYPES } from "./factory/queryFactory";
 
 export default function usePlayer() {
   const [searchParams] = useSearchParams();
@@ -12,5 +12,6 @@ export default function usePlayer() {
   return useQueryFactory({
     queryKey: ["players", account, startDate, endDate, category],
     queryFn: () => getListPlayer({ account, startDate, endDate, category }),
+    type: QUERY_TYPES.SIMPLE,
   });
 }
