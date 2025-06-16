@@ -1,7 +1,7 @@
 import { Pagination as AntdPagination } from "antd";
 import { useSearchParams } from "react-router";
 
-export default function Pagination({ pagination }) {
+export default function Pagination({ pagination, ...rest }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const page = searchParams.get("page") || 1;
@@ -24,6 +24,7 @@ export default function Pagination({ pagination }) {
         onChange={handlePageChange}
         showSizeChanger={true}
         pageSizeOptions={["20", "50", "100"]}
+        {...rest}
       />
     </div>
   );

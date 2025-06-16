@@ -4,8 +4,9 @@ import { Flex, Tag } from "antd";
 import moment from "moment";
 import usePlayer from "../../../hooks/usePlayer";
 import DeleteModal from "./DeleteModal";
+import Pagination from "../../../components/Pagination";
 
-const questionColumns = [
+const playerColumns = [
   {
     key: "account",
     title: "Tên người chơi",
@@ -99,10 +100,20 @@ export default function PlayerTable() {
   const playerData = usePlayer();
 
   return (
-    <UniversalTable
-      queryData={playerData}
-      columns={questionColumns}
-      scroll={{ x: 500, y: 350 }}
-    />
+    <>
+      <UniversalTable
+        queryData={playerData}
+        columns={playerColumns}
+        scroll={{ x: 500, y: 350 }}
+        pagination={false}
+      />
+      <Pagination
+        pagination={{
+          total: playerData?.data?.data?.pagination?.totalRecords,
+          pageSize: 100,
+        }}
+        showSizeChanger={false}
+      />
+    </>
   );
 }

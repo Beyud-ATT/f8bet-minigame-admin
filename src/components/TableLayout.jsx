@@ -10,6 +10,7 @@ const UniversalTable = ({
   className,
   scroll,
   style,
+  ...rest
 }) => {
   // React Query hook
   const { data = [], isLoading } = queryData;
@@ -81,6 +82,7 @@ const UniversalTable = ({
       className={className}
       style={style}
       scroll={scroll || { x: 500, y: 500 }}
+      {...rest}
     />
   );
 };

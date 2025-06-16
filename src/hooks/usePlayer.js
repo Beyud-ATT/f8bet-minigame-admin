@@ -8,10 +8,12 @@ export default function usePlayer() {
   const startDate = searchParams.get("startDate");
   const endDate = searchParams.get("endDate");
   const category = searchParams.get("category");
+  const page = searchParams.get("page") || 1;
 
   return useQueryFactory({
-    queryKey: ["players", account, startDate, endDate, category],
-    queryFn: () => getListPlayer({ account, startDate, endDate, category }),
+    queryKey: ["players", account, startDate, endDate, category, page],
+    queryFn: () =>
+      getListPlayer({ account, startDate, endDate, category, page }),
     type: QUERY_TYPES.SIMPLE,
   });
 }
